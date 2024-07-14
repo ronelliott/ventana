@@ -12,6 +12,13 @@ import (
 // WindowOption represents an option for a Window.
 type WindowOption func(*windowImpl) error
 
+// WithBoundFunction binds a function to the window.
+func WithBoundFunction(name string, fn interface{}) WindowOption {
+	return func(window *windowImpl) error {
+		return window.Bind(name, fn)
+	}
+}
+
 // WithDebug enables debug mode for the window. Note that this must be the first
 // option in an option list, and must always be present.
 func WithDebug(debug bool) WindowOption {
