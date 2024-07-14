@@ -52,6 +52,14 @@ func WithTitle(title string) WindowOption {
 	}
 }
 
+// WithUIEventHandlerName sets the name of the UI event handler.
+func WithUIEventHandlerName(name string) WindowOption {
+	return func(window *windowImpl) error {
+		window.uiEventHandlerName = name
+		return nil
+	}
+}
+
 // WithServerEnabled enables the HTTP server for the window. Note that
 // this option is required if you want to serve UI assets and must be used in
 // conjunction and after WithPort.

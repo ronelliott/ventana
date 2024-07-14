@@ -12,20 +12,26 @@ type Window interface {
 	webview.WebView
 	// Close closes the window and cleans up. The window will be unusable after a call to this method.
 	Close()
+	// SendEvent sends an event to the window.
+	SendEvent(*Event) error
 }
 
 // windowImpl is the default implementation of Window.
 type windowImpl struct {
 	webview.WebView
-	// port is the port used by the HTTP server created by the window manager.
+	// port is the port used by the HTTP server created by the window.
 	port string
 	// server is the HTTP server used to serve the UI assets.
 	server *http.Server
+	// uiEventHandlerName is the name of the event handler used by the window.
+	uiEventHandlerName string
 }
 
 // NewWindow creates a new window with the given options.
 func NewWindow(opts ...WindowOption) (Window, error) {
-	window := &windowImpl{}
+	window := &windowImpl{
+		uiEventHandlerName: "onEventReceived",
+	}
 
 	for _, opt := range opts {
 		if err := opt(window); err != nil {
