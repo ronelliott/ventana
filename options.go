@@ -19,6 +19,19 @@ func WithBoundFunction(name string, fn interface{}) WindowOption {
 	}
 }
 
+// WithBoundFunctions binds functions to the window.
+func WithBoundFunctions(fns map[string]interface{}) WindowOption {
+	return func(window *windowImpl) error {
+		for name, fn := range fns {
+			if err := WithBoundFunction(name, fn)(window); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	}
+}
+
 // WithDebug enables debug mode for the window. Note that this must be the first
 // option in an option list, and must always be present.
 func WithDebug(debug bool) WindowOption {
